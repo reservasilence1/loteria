@@ -170,21 +170,21 @@
       text-align:center;
     }
 
-    /* Overlay de loading (IMPORTANTE: não cobre o header) */
-    #loadingOverlay{
-      display:none;
-      position:fixed;
-      top:var(--headerH);
-      left:0;
-      width:100%;
-      height:calc(100vh - var(--headerH));
-      background:#fff;
-      z-index:9999;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      padding:24px;
-      text-align:center;
+   
+    /* Overlay de loading (cobre TUDO, inclusive o header) */
+#loadingOverlay{
+  display:none;
+  position:fixed;
+  inset:0;              /* top:0; right:0; bottom:0; left:0 */
+  background:#fff;
+  z-index:20000;        /* maior que o header */
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:24px;
+  text-align:center;
+
+
     }
     #loadingOverlay img{
       width:220px;
