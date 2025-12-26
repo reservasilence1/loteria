@@ -1,320 +1,466 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prioridade de Processamento</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prioridade de Processamento</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-<style>
-:root{
-  --primary:#0b5aa9;
-  --primaryDark:#094b8e;
-  --accent:#f39200;
-  --bg:#f6f7f9;
-  --card:#ffffff;
-  --text:#1f2a37;
-  --muted:#6b7280;
-  --border:#e5e7eb;
-  --danger:#d32f2f;
-  --success:#2e7d32;
-  --shadow:0 8px 22px rgba(0,0,0,.08);
-  --radius:14px;
-  --headerH:120px;
-}
+  <style>
+    :root{
+      --primary:#0b5aa9;
+      --primaryDark:#094b8e;
+      --accent:#f39200;
+      --bg:#f6f7f9;
+      --card:#ffffff;
+      --text:#1f2a37;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --danger:#d32f2f;
+      --success:#2e7d32;
+      --shadow:0 10px 24px rgba(0,0,0,.08);
+      --radius:14px;
+      --headerH:120px;
+    }
 
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  padding-top:var(--headerH);
-}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      padding-top:var(--headerH);
+      padding-bottom:40px;
+    }
 
-/* HEADER */
-.header{
-  position:fixed;top:0;left:0;width:100%;height:var(--headerH);
-  background:linear-gradient(135deg,var(--primary),var(--primaryDark));
-  display:flex;align-items:center;justify-content:center;
-  z-index:999;box-shadow:0 4px 12px rgba(0,0,0,.12);
-}
-.header img{height:64px}
+    /* HEADER (neutro) */
+    .header{
+      position:fixed; inset:0 0 auto 0;
+      height:var(--headerH);
+      z-index:999;
+      background:linear-gradient(135deg,var(--primary),var(--primaryDark));
+      box-shadow:0 6px 16px rgba(0,0,0,.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 16px;
+      text-align:center;
+    }
+    .brandWrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+    .brandLogo{
+      width:280px; max-width:82vw; height:auto; max-height:70px;
+      object-fit:contain;
+      filter:drop-shadow(0 2px 4px rgba(0,0,0,.20));
+    }
+    .headerLine{
+      color:#eaf2ff;
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:-.2px;
+      opacity:.98;
+    }
+    .headerMeta{
+      color:#eaf2ff;
+      font-size:14px;
+      font-weight:600;
+      opacity:.95;
+    }
 
-/* CONTAINER */
-.container{
-  max-width:720px;
-  margin:0 auto;
-  background:var(--card);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
+    .container{
+      max-width:720px;
+      margin:0 auto;
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
 
-/* ===== TELA 1 – PROCESSAMENTO ===== */
-.processing{
-  padding:40px 30px;
-  text-align:center;
-  animation:fadeIn .6s ease;
-}
+    .main{
+      padding:32px 26px;
+    }
 
-.processing h1{
-  font-size:24px;
-  font-weight:800;
-  color:var(--primary);
-  margin-bottom:10px;
-}
+    .notice{
+      background:#eef6ff;
+      border:1px solid #d7e8ff;
+      border-left:4px solid var(--primary);
+      border-radius:12px;
+      padding:14px 14px;
+      color:#163a66;
+      font-size:14px;
+      line-height:1.55;
+      margin-bottom:18px;
+    }
 
-.processing p{
-  color:var(--muted);
-  font-size:15px;
-  margin-bottom:30px;
-}
+    .sectionTitle{
+      font-size:18px;
+      font-weight:900;
+      color:var(--primary);
+      margin:8px 0 12px;
+      letter-spacing:-.2px;
+    }
 
-.steps{
-  text-align:left;
-  max-width:420px;
-  margin:0 auto;
-}
+    /* FILA + ANIMAÇÃO */
+    .queueCard{
+      background:#fafafa;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:16px;
+      margin-bottom:18px;
+    }
 
-.step{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:12px 0;
-  font-size:14px;
-  color:#374151;
-  opacity:.4;
-  transition:.3s;
-}
+    .queueTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .queueLabel{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+    }
+    .queueValue{
+      font-size:22px;
+      font-weight:900;
+      color:var(--text);
+      text-align:right;
+      line-height:1.1;
+    }
+    .queueSub{
+      font-size:12px;
+      color:var(--muted);
+      text-align:right;
+      margin-top:4px;
+    }
 
-.step.active{opacity:1}
-.step.done{opacity:1;color:var(--success)}
+    .barWrap{
+      height:14px;
+      background:#e5e7eb;
+      border-radius:999px;
+      overflow:hidden;
+      position:relative;
+    }
+    .barFill{
+      height:100%;
+      width:84%;
+      background:linear-gradient(135deg,var(--primary),var(--accent));
+      transition:width .4s ease;
+    }
 
-.dot{
-  width:18px;height:18px;border-radius:50%;
-  border:2px solid var(--primary);
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:900;
-}
+    .queueTicker{
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      font-size:13px;
+      color:#374151;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--border);
+      box-shadow:0 6px 14px rgba(0,0,0,.05);
+      font-weight:800;
+      white-space:nowrap;
+    }
+    .pulseDot{
+      width:10px;height:10px;border-radius:50%;
+      background:var(--success);
+      box-shadow:0 0 0 0 rgba(46,125,50,.45);
+      animation:pulse 1.3s infinite;
+    }
+    @keyframes pulse{
+      0%{box-shadow:0 0 0 0 rgba(46,125,50,.42)}
+      70%{box-shadow:0 0 0 10px rgba(46,125,50,0)}
+      100%{box-shadow:0 0 0 0 rgba(46,125,50,0)}
+    }
 
-.done .dot{
-  background:var(--success);
-  border-color:var(--success);
-  color:#fff;
-}
+    /* ESCASSEZ */
+    .scarcity{
+      background:#fff5f5;
+      border:1px solid #f3c7c7;
+      border-left:4px solid var(--danger);
+      border-radius:12px;
+      padding:14px;
+      font-size:14px;
+      line-height:1.55;
+      margin-bottom:18px;
+      color:#5f1a1a;
+    }
+    .scarcity strong{color:var(--danger)}
 
-.progressBar{
-  margin:30px auto 0;
-  width:100%;
-  max-width:420px;
-  height:10px;
-  background:#e5e7eb;
-  border-radius:999px;
-  overflow:hidden;
-}
+    /* BLOCOS BOLÃO */
+    .blocks{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin-bottom:16px;
+    }
+    .block{
+      background:#fafafa;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px 14px;
+    }
+    .row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      padding:8px 0;
+      border-bottom:1px solid #e9ecef;
+    }
+    .row:last-child{border-bottom:none}
+    .label{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .value{
+      font-size:13px;
+      font-weight:900;
+      color:var(--text);
+      text-align:right;
+      max-width:62%;
+      word-break:break-word;
+    }
+    .statusPill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:#eef6ff;
+      border:1px solid #d7e8ff;
+      color:#163a66;
+      font-weight:900;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .statusDot{
+      width:8px;height:8px;border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 0 rgba(243,146,0,.45);
+      animation:pulse2 1.4s infinite;
+    }
+    @keyframes pulse2{
+      0%{box-shadow:0 0 0 0 rgba(243,146,0,.42)}
+      70%{box-shadow:0 0 0 10px rgba(243,146,0,0)}
+      100%{box-shadow:0 0 0 0 rgba(243,146,0,0)}
+    }
 
-.progress{
-  height:100%;
-  width:0%;
-  background:var(--primary);
-  transition:width .4s ease;
-}
+    .cta{
+      width:100%;
+      border:none;
+      border-radius:999px;
+      padding:16px 16px;
+      background:linear-gradient(135deg,var(--accent), #ff7a00);
+      color:#fff;
+      font-size:16px;
+      font-weight:1000;
+      cursor:pointer;
+      text-transform:uppercase;
+      letter-spacing:.3px;
+      box-shadow:0 14px 26px rgba(243,146,0,.28);
+      transition:transform .15s ease, box-shadow .15s ease;
+    }
+    .cta:hover{transform:translateY(-1px); box-shadow:0 18px 32px rgba(243,146,0,.34)}
+    .fineprint{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.45;
+      text-align:center;
+    }
 
-/* ===== TELA 2 – UPSELL ===== */
-.upsell{
-  display:none;
-  padding:36px 30px;
-  animation:fadeIn .6s ease;
-}
-
-.alert{
-  background:#fff5f5;
-  border-left:4px solid var(--danger);
-  border-radius:12px;
-  padding:16px;
-  font-size:15px;
-  line-height:1.55;
-  margin-bottom:22px;
-}
-
-.alert strong{color:var(--danger)}
-
-.sectionTitle{
-  font-size:20px;
-  font-weight:800;
-  color:var(--primary);
-  margin-bottom:14px;
-}
-
-/* GRÁFICO DE FILA */
-.queueBox{
-  background:#fafafa;
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:18px;
-  margin-bottom:20px;
-}
-
-.queueRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:10px;
-  font-size:14px;
-}
-
-.barWrap{
-  height:14px;
-  background:#e5e7eb;
-  border-radius:999px;
-  overflow:hidden;
-}
-
-.barFill{
-  height:100%;
-  width:78%;
-  background:linear-gradient(135deg,var(--primary),var(--accent));
-}
-
-/* ESCASSEZ */
-.scarcity{
-  background:#eef6ff;
-  border:1px solid #d7e8ff;
-  border-radius:14px;
-  padding:16px;
-  margin-bottom:20px;
-  font-size:14px;
-}
-
-/* CTA */
-.cta{
-  background:linear-gradient(135deg,var(--accent),#ff7a00);
-  border:none;
-  width:100%;
-  border-radius:999px;
-  padding:16px;
-  font-size:16px;
-  font-weight:900;
-  color:#fff;
-  cursor:pointer;
-  box-shadow:0 12px 22px rgba(243,146,0,.3);
-}
-
-.cta:hover{transform:translateY(-1px)}
-
-.small{
-  margin-top:10px;
-  font-size:12px;
-  color:var(--muted);
-  text-align:center;
-}
-
-/* ANIMAÇÕES */
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:none}
-}
-</style>
+    @media(max-width:600px){
+      :root{--headerH:110px}
+      .headerLine{font-size:18px}
+      .main{padding:26px 18px}
+      .queueValue{font-size:20px}
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="header">
-  <img src="/painel/sucesso/images/logobrancal.png" alt="CAIXA">
-</div>
-
-<div class="container">
-
-  <!-- TELA 1 -->
-  <div class="processing" id="processing">
-    <h1>Processando Registro</h1>
-    <p>Estamos validando sua participação no sistema.</p>
-
-    <div class="steps">
-      <div class="step active" id="s1"><div class="dot">1</div>Validando dados do participante</div>
-      <div class="step" id="s2"><div class="dot">2</div>Verificando disponibilidade do bolão</div>
-      <div class="step" id="s3"><div class="dot">3</div>Organizando fila de processamento</div>
-      <div class="step" id="s4"><div class="dot">4</div>Preparando registro oficial</div>
-    </div>
-
-    <div class="progressBar">
-      <div class="progress" id="progress"></div>
+  <div class="header">
+    <div class="brandWrap">
+      <!-- Use SUA MARCA / logo próprio -->
+      <img class="brandLogo" src="/painel/sucesso/images/logobrancal.png" alt="Plataforma" />
+      <div class="headerLine" id="headerTitle">Prioridade de Processamento</div>
+      <div class="headerMeta" id="headerMeta">—</div>
     </div>
   </div>
 
-  <!-- TELA 2 -->
-  <div class="upsell" id="upsell">
-    <div class="alert">
-      <strong>Atenção:</strong> devido ao alto volume de participantes,
-      os registros estão sendo processados em fila.
-    </div>
+  <div class="container">
+    <div class="main">
 
-    <div class="sectionTitle">Fila atual de processamento</div>
-
-    <div class="queueBox">
-      <div class="queueRow">
-        <span>Participantes aguardando</span>
-        <strong>1.842</strong>
+      <div class="notice">
+        <strong>Atualização automática:</strong> estamos organizando a fila de processamento e validando os registros no sistema.
       </div>
-      <div class="barWrap">
-        <div class="barFill"></div>
+
+      <div class="sectionTitle">Fila de processamento</div>
+
+      <div class="queueCard">
+        <div class="queueTop">
+          <div>
+            <div class="queueLabel">Participantes aguardando processamento</div>
+          </div>
+          <div>
+            <div class="queueValue" id="queueCount">56.987</div>
+            <div class="queueSub" id="queueHint">atualizando em tempo real</div>
+          </div>
+        </div>
+
+        <div class="barWrap">
+          <div class="barFill" id="queueBar"></div>
+        </div>
+
+        <div class="queueTicker">
+          <div class="chip"><span class="pulseDot"></span> Processando agora</div>
+          <div class="chip" id="leavingChip">—</div>
+        </div>
       </div>
-      <div class="queueRow" style="margin-top:8px;color:var(--muted)">
-        <span>Sua posição estimada</span>
-        <strong>+30 min</strong>
+
+      <div class="scarcity" id="scarcityBox">
+        <strong>Escassez:</strong> alguns bolões estão próximos do limite de cotas. Registros sem prioridade podem entrar em ciclos posteriores.
       </div>
-    </div>
 
-    <div class="scarcity">
-      ⚠️ Alguns bolões estão <strong>próximos do limite de cotas</strong>.
-      Registros sem prioridade podem não entrar no primeiro ciclo.
-    </div>
+      <div class="sectionTitle">Prioridade de Processamento</div>
 
-    <div class="sectionTitle">Prioridade de Processamento</div>
-    <p style="font-size:14px;color:#374151;margin-bottom:16px">
-      Ativando a prioridade, sua participação é realocada para
-      <strong>canal preferencial</strong>, antecipando a validação e o registro.
-    </p>
+      <div class="blocks">
+        <div class="block">
+          <div class="row">
+            <span class="label">Nome</span>
+            <span class="value" id="leadNome">—</span>
+          </div>
+          <div class="row">
+            <span class="label">Bolão</span>
+            <span class="value" id="bolaoNome">Mega da Virada • Bolão</span>
+          </div>
+          <div class="row">
+            <span class="label">Status</span>
+            <span class="value">
+              <span class="statusPill"><span class="statusDot"></span> Na fila</span>
+            </span>
+          </div>
+        </div>
+      </div>
 
-    <button class="cta" onclick="location.href='https://www.pay-pagamentos.link/checkout/SEU-ID-AQUI'">
-      Ativar Prioridade Agora
-    </button>
+      <button class="cta" id="ctaBtn">Ativar Prioridade Agora</button>
 
-    <div class="small">
-      Serviço interno da plataforma para organização e ordenação do processamento.
+      <div class="fineprint">
+        Serviço interno da plataforma para ordenação do processamento. Não altera resultado de sorteio.
+      </div>
     </div>
   </div>
-
-</div>
 
 <script>
-const steps = ['s1','s2','s3','s4'];
-let progress = 0;
-let stepIndex = 0;
+  'use strict';
 
-const bar = document.getElementById('progress');
+  // ====== CONFIG ======
+  const CHECKOUT_URL = 'https://www.seu-checkout-aqui.com'; // ajuste
+  const INITIAL_QUEUE = 56987;
 
-const interval = setInterval(()=>{
-  progress += 25;
-  bar.style.width = progress + '%';
-
-  if(stepIndex < steps.length){
-    document.getElementById(steps[stepIndex]).classList.add('done');
-    stepIndex++;
+  // ====== HELPERS ======
+  function pad2(n){ return String(n).padStart(2,'0'); }
+  function formatBRInt(n){
+    try{ return Number(n).toLocaleString('pt-BR'); }catch(e){ return String(n); }
+  }
+  function safeText(v, max=120){
+    return String(v ?? '').replace(/[<>\"']/g,'').substring(0,max);
+  }
+  function formatDateTimeBR(d){
+    const dd = pad2(d.getDate());
+    const mm = pad2(d.getMonth()+1);
+    const yy = d.getFullYear();
+    const hh = pad2(d.getHours());
+    const mi = pad2(d.getMinutes());
+    return `${dd}/${mm}/${yy}, ${hh}:${mi}`;
   }
 
-  if(progress >= 100){
-    clearInterval(interval);
-    setTimeout(()=>{
-      document.getElementById('processing').style.display='none';
-      document.getElementById('upsell').style.display='block';
-    },600);
+  function getLeadName(){
+    // tenta achar em chaves comuns
+    const nome1 = localStorage.getItem('nome');
+    const nome2 = localStorage.getItem('nomeUsuario');
+
+    let nome = safeText(nome1 || nome2 || '', 120);
+
+    // tenta dadosUsuario {nome, cpf}
+    try{
+      const du = JSON.parse(localStorage.getItem('dadosUsuario') || 'null');
+      if(!nome && du && du.nome) nome = safeText(du.nome, 120);
+    }catch(e){}
+
+    return nome || 'Participante';
   }
-},900);
+
+  // ====== HEADER TITLE + DATA/HORA ======
+  function renderHeader(){
+    const now = new Date();
+    document.getElementById('headerMeta').textContent =
+      `Verificação de Bolões • ${formatDateTimeBR(now)}`;
+  }
+
+  // ====== QUEUE ANIMATION ======
+  let queue = INITIAL_QUEUE;
+  const queueEl = document.getElementById('queueCount');
+  const leavingChip = document.getElementById('leavingChip');
+  const queueBar = document.getElementById('queueBar');
+
+  function tickQueue(){
+    // variação de pessoas saindo (mais realista): 37..248
+    const leaving = Math.floor(Math.random() * (248 - 37 + 1)) + 37;
+
+    // impede de ficar negativo e mantém no mínimo “alto”
+    queue = Math.max(1200, queue - leaving);
+
+    queueEl.textContent = formatBRInt(queue);
+    leavingChip.textContent = `Saíram da fila: ${formatBRInt(leaving)}`;
+
+    // barra ajusta levemente (não linear)
+    const pct = Math.max(18, Math.min(92, (queue / INITIAL_QUEUE) * 92));
+    queueBar.style.width = pct.toFixed(0) + '%';
+
+    // “escassez” variando (simples e eficaz)
+    const scarcityBox = document.getElementById('scarcityBox');
+    const left = Math.floor(Math.random() * 14) + 3; // 3..16
+    scarcityBox.innerHTML =
+      `<strong>Escassez:</strong> cotas restantes em alguns bolões: <strong>${left}</strong>. Registros sem prioridade podem entrar em ciclos posteriores.`;
+  }
+
+  // ====== INIT ======
+  document.getElementById('leadNome').textContent = getLeadName();
+  renderHeader();
+  tickQueue();
+
+  // Atualiza header a cada minuto
+  setInterval(renderHeader, 30 * 1000);
+
+  // Anima fila (intervalo variável para parecer orgânico)
+  function scheduleNextTick(){
+    const ms = Math.floor(Math.random() * (1800 - 900 + 1)) + 900; // 0.9s..1.8s
+    setTimeout(() => {
+      tickQueue();
+      scheduleNextTick();
+    }, ms);
+  }
+  scheduleNextTick();
+
+  // CTA
+  document.getElementById('ctaBtn').addEventListener('click', function(){
+    window.location.href = CHECKOUT_URL;
+  });
 </script>
 
 </body>
