@@ -29,6 +29,7 @@
       --shadow:0 10px 24px rgba(0,0,0,.08);
       --radius:14px;
 
+      /* Mantive, mas agora o espaçamento do body será dinâmico via JS */
       --headerH:120px;
     }
 
@@ -38,19 +39,31 @@
       background:var(--bg);
       color:var(--text);
       min-height:100vh;
-      padding-top:var(--headerH);
+
+      /* ✅ Corrigido: padding-top agora é dinâmico (JS calcula pela altura real do header) */
+      padding-top: 0;
       padding-bottom:40px;
     }
 
-    /* HEADER (mesma ideia dos anteriores: logo + título/linha + data/hora) */
+    /* ✅ Corrigido: header deixa de ter height fixa e passa a ser auto */
     .header{
-      position:fixed; top:0; left:0; width:100%; height:var(--headerH); z-index:999;
-      display:flex; align-items:center; justify-content:center;
+      position:fixed;
+      top:0; left:0; width:100%;
+      height:auto;                /* <- chave */
+      min-height:var(--headerH);  /* mantém padrão */
+      z-index:999;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
       background:linear-gradient(135deg,var(--primary) 0%, var(--primaryDark) 100%);
       box-shadow:0 6px 16px rgba(0,0,0,.12);
-      padding:12px 16px;
+
+      padding:14px 16px;          /* um pouco mais de respiro */
       text-align:center;
     }
+
     .brandWrap{display:flex;flex-direction:column;align-items:center;gap:8px}
     .brandWrap img{
       width:280px; max-width:82vw; height:auto; max-height:70px; object-fit:contain;
@@ -249,7 +262,7 @@
       text-align:center;
     }
 
-    /* ===== LOADING (mantém a tela que você pediu) ===== */
+    /* ===== LOADING ===== */
     #loadingOverlay{
       display:none;
       position:fixed;
@@ -302,6 +315,7 @@
       .headerLine{font-size:18px}
       .main{padding:26px 18px}
       .queueValue{font-size:20px}
+      .header{padding:12px 14px}
     }
   </style>
 </head>
@@ -310,7 +324,6 @@
 
   <div class="header" id="header">
     <div class="brandWrap">
-      <!-- Use SUA MARCA / logo próprio -->
       <img id="brandLogo" src="/painel/sucesso/images/logobrancal.png" alt="Plataforma" />
       <div class="headerLine" id="headerLine">Prioridade de Processamento</div>
       <div class="headerMeta" id="headerMeta">Verificação de Bolões • —</div>
@@ -374,9 +387,7 @@
     </div>
   </div>
 
-  <!-- Loading Overlay (mesma ideia, com etapas e barra) -->
   <div id="loadingOverlay">
-    <!-- Use uma imagem neutra sua (não use marca de terceiros) -->
     <img src="/painel/sucesso/images/loteriascaixa.svg" alt="Logo" />
     <div class="progressOuter"><div id="progressBar"></div></div>
     <div id="progressPct">0%</div>
@@ -423,6 +434,14 @@
     return nome || 'Participante';
   }
 
+  /* ✅ NOVO: ajusta o padding do body conforme altura REAL do header */
+  function ajustarEspacoHeader(){
+    const header = document.getElementById('header');
+    if(!header) return;
+    const h = header.offsetHeight || 120;
+    document.body.style.paddingTop = (h + 12) + 'px'; // +12px de respiro
+  }
+
   // ====== LOADING ======
   function startLoadingThenShow(){
     const overlay = document.getElementById('loadingOverlay');
@@ -455,7 +474,6 @@
 
       if(progress === 100){
         clearInterval(interval);
-        // fade-out e volta pra tela principal
         overlay.style.opacity = '1';
         overlay.style.transition = 'opacity .45s ease';
 
@@ -468,7 +486,7 @@
     }, 650);
   }
 
-  // ====== QUEUE (15s, -5..-10, sem “saíram X”) ======
+  // ====== QUEUE (15s, -5..-10) ======
   let queue = INITIAL_QUEUE;
   const queueEl = document.getElementById('queueCount');
   const queueBar = document.getElementById('queueBar');
@@ -479,11 +497,9 @@
 
     if(queueEl) queueEl.textContent = formatBRInt(queue);
 
-    // barra suave (percentual aproximado)
     const pct = Math.max(18, Math.min(92, (queue / INITIAL_QUEUE) * 92));
     if(queueBar) queueBar.style.width = pct.toFixed(0) + '%';
 
-    // escassez variando, só pra dar vida
     const scarcityBox = document.getElementById('scarcityBox');
     const left = Math.floor(Math.random() * 14) + 3; // 3..16
     if(scarcityBox){
@@ -493,20 +509,27 @@
   }
 
   // ====== INIT ======
-  renderHeader();
-  setInterval(renderHeader, 30 * 1000);
+  function init(){
+    renderHeader();
+    setInterval(renderHeader, 30 * 1000);
 
-  document.getElementById('leadNome').textContent = getLeadName();
+    document.getElementById('leadNome').textContent = getLeadName();
 
-  // Inicializa fila e roda a cada 15s
-  updateQueue();
-  setInterval(updateQueue, 15000);
+    updateQueue();
+    setInterval(updateQueue, 15000);
 
-  // Mostra loading ao entrar e depois some (como você pediu)
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', startLoadingThenShow);
-  }else{
+    // ✅ Ajuste do header: no load e no resize
+    ajustarEspacoHeader();
+    window.addEventListener('resize', ajustarEspacoHeader);
+
+    // Loading ao entrar
     startLoadingThenShow();
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  }else{
+    init();
   }
 
   document.getElementById('ctaBtn').addEventListener('click', function(){
