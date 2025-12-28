@@ -370,6 +370,10 @@
   <!-- UTMify UTMs Script -->
   <script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" defer></script>
 
+
+
+  
+
   <!-- UTMify Tracking Script (mantido) -->
   <script>
     (function (window) {
@@ -379,7 +383,7 @@
         getPixelId: function () {
           try { const storedPixelId = localStorage.getItem('utmify_pixel_id'); if (storedPixelId) return storedPixelId; } catch (e) {}
           if (window.pixelId) return window.pixelId;
-          return '693235534e24ea4b926a9a07';
+          return '694cc5bb77ed28913824a09d';
         },
         API_URL: 'https://tracking.utmify.com.br/tracking/v1/events'
       };
@@ -524,6 +528,27 @@
 </head>
 
 <body>
+
+
+
+  <script>
+  window.pixelId = "694cc5bb77ed28913824a09d";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script>
+
+<script
+  src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+  data-utmify-prevent-xcod-sck
+  data-utmify-prevent-subids
+  async
+  defer
+></script>
+
+  
   <div class="container">
     <!-- Cabeçalho -->
     <div class="header">
