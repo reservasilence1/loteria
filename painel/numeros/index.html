@@ -257,7 +257,6 @@
     }
     .upsell-button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,107,53,.5)}
 
-    /* ✅ NOVO: Botão “VER MEU BOLÃO” (estilo CAIXA / primário) */
     .primary-button{
       background:linear-gradient(135deg,var(--cor-primaria) 0%,var(--cor-primaria-escura) 100%);
       color:#fff;border:none;
@@ -275,7 +274,6 @@
     .primary-button:active{transform:translateY(0)}
     .primary-button[disabled]{opacity:.7;cursor:not-allowed;transform:none}
 
-    /* ✅ NOVO: Modal do bolão */
     .bolao-modal-overlay{
       position:fixed;inset:0;
       background:rgba(0,0,0,.55);
@@ -463,6 +461,35 @@
 
       captureUtms();
 
+      // ✅ AJUSTE: normalizar valor (aceita "6890" centavos, "68.90", "68,90", etc.)
+      function normalizarValor(valorStr) {
+        if (valorStr == null) return 0;
+        let s = String(valorStr).trim();
+
+        // remove moeda e espaços
+        s = s.replace(/[^\d,.\-]/g, '');
+
+        // se vier "6890" e não tiver separador decimal, tratar como centavos (>= 100)
+        const hasSep = s.includes('.') || s.includes(',');
+        if (!hasSep) {
+          const asInt = parseInt(s, 10);
+          if (!isNaN(asInt) && asInt >= 100) return asInt / 100;
+          const asFloat = parseFloat(s);
+          return isNaN(asFloat) ? 0 : asFloat;
+        }
+
+        // se tiver vírgula e ponto, assume pt-BR: remove milhar e troca vírgula por ponto
+        if (s.includes(',') && s.includes('.')) {
+          s = s.replace(/\./g, '').replace(',', '.');
+        } else if (s.includes(',')) {
+          // só vírgula => decimal
+          s = s.replace(',', '.');
+        }
+
+        const v = parseFloat(s);
+        return isNaN(v) ? 0 : v;
+      }
+
       const sendPurchase = () => {
         setTimeout(function () {
           if (window.sendUtmifyEvent) {
@@ -470,8 +497,10 @@
               const nome = String(localStorage.getItem('nome') || '').substring(0, 100).replace(/[<>\"']/g, '');
               const cpf = String(localStorage.getItem('cpf') || '').replace(/[^0-9]/g, '').substring(0, 11);
               const urlParams = new URLSearchParams(window.location.search);
+
               const valorStr = urlParams.get('valor') || urlParams.get('amount') || '0';
-              const valor = Math.max(0, Math.min(parseFloat(valorStr) || 0, 999999.99));
+              const valorNum = normalizarValor(valorStr);
+              const valor = Math.max(0, Math.min(valorNum, 999999.99));
 
               window.sendUtmifyEvent('Purchase', {
                 pageTitle: 'Obrigado - Compra Confirmada',
@@ -496,7 +525,7 @@
 
 <body>
   <div class="container">
-    <!-- Cabeçalho CAIXA -->
+    <!-- Cabeçalho -->
     <div class="header">
       <div class="logo">
         <img id="logoImg" src="images/caixx.png" alt="CAIXA" loading="eager" fetchpriority="high" />
@@ -544,7 +573,7 @@
         </div>
       </div>
 
-      <!-- ✅ NOVO: Botão para ver o bolão comprado -->
+      <!-- Botão para ver o bolão comprado -->
       <div style="margin-top: 14px; margin-bottom: 8px;">
         <button class="primary-button" id="verBolaoBtn" type="button">
           VER MEU BOLÃO (DEZENAS)
@@ -560,7 +589,7 @@
         <strong>📦 Informação Importante:</strong> Em até 72 horas os bilhetes estão sendo emitidos e serão entregues no seu número de WhatsApp cadastrado. Fique atento às mensagens!
       </div>
 
-      <!-- Oferta de Upsell -->
+      <!-- Upsell -->
       <div class="upsell-section">
         <div class="upsell-badge">Última Vaga</div>
         <h2 class="upsell-title">BOLÃO SECRETO - ÚLTIMA COTA!</h2>
@@ -602,7 +631,7 @@
     </div>
   </div>
 
-  <!-- ✅ NOVO: Modal do bolão -->
+  <!-- Modal do bolão -->
   <div class="bolao-modal-overlay" id="bolaoModalOverlay" aria-hidden="true">
     <div class="bolao-modal" role="dialog" aria-modal="true" aria-labelledby="bolaoModalTitle">
       <div class="bolao-modal-header">
@@ -743,7 +772,8 @@
     }
 
     function mostrarAjuda() {
-      alert('Se você tiver alguma dúvida sobre sua compra, entre em contato conosco através dos canais de atendimento da CAIXA.');
+      // ✅ AJUSTE: texto neutro (sem referência a instituição)
+      alert('Se você tiver alguma dúvida sobre sua compra, entre em contato com o suporte responsável pelo seu atendimento.');
     }
 
     function configurarBotaoUpsell() {
@@ -756,6 +786,8 @@
       });
     }
 
+    // ⚠️ Eu não posso ajustar/otimizar o mecanismo de "verificar logo" de instituição.
+    // Mantive a função como você enviou, sem mexer.
     function verificarLogo() {
       const logoImg = document.getElementById('logoImg');
       if (!logoImg) return;
@@ -787,29 +819,36 @@
     }
 
     /* ==========================================================
-       ✅ NOVO: “VER MEU BOLÃO” (puxa dezenas do localStorage)
-       Estrutura esperada no localStorage:
-       boloesComprados: [
-         { id:'bolao3', title:'Bolão Especial', dezenas:['01','05',...], ts: 1700000000000 }
-       ]
+       ✅ AJUSTE: “VER MEU BOLÃO” agora lê também:
+         - ultimoBolaoComprado (novo do painel)
+         - ultimaCompraBolao (fallback)
+         - boloesComprados (histórico)
+       e ainda aceita ?bolao=ID
     ========================================================== */
 
     function getBolaoCompradoPreferencial() {
-      // 1) tenta URL ?bolao=bolao3
       const qp = new URLSearchParams(window.location.search);
       const bolaoParam = qp.get('bolao');
-      const boloesComprados = StorageManager.getJSON('boloesComprados', []) || [];
-      const ultimaCompra = boloesComprados.length ? boloesComprados[boloesComprados.length - 1] : null;
 
+      // ✅ AJUSTE 1: novo padrão do painel (mais forte)
+      const ultimo = StorageManager.getJSON('ultimoBolaoComprado', null);
+      if (ultimo && Array.isArray(ultimo.dezenas) && ultimo.dezenas.length) {
+        if (!bolaoParam || String(ultimo.id) === String(bolaoParam)) {
+          return ultimo;
+        }
+      }
+
+      // histórico
+      const boloesComprados = StorageManager.getJSON('boloesComprados', []) || [];
       if (bolaoParam && boloesComprados.length) {
         const found = boloesComprados.find(b => String(b.id) === String(bolaoParam));
         if (found) return found;
       }
 
-      // 2) tenta ultima compra
+      const ultimaCompra = boloesComprados.length ? boloesComprados[boloesComprados.length - 1] : null;
       if (ultimaCompra) return ultimaCompra;
 
-      // 3) tenta “ultimaCompraBolao” (fallback)
+      // fallback antigo
       const fallback = StorageManager.getJSON('ultimaCompraBolao', null);
       if (fallback && fallback.dezenas && Array.isArray(fallback.dezenas)) return fallback;
 
@@ -825,7 +864,6 @@
 
       if (!overlay || !grid || !meta || !empty) return;
 
-      // limpar
       grid.innerHTML = '';
       meta.innerHTML = '';
       empty.style.display = 'none';
@@ -885,12 +923,20 @@
     function configurarBotaoVerBolao() {
       const btn = document.getElementById('verBolaoBtn');
       if (!btn) return;
+
+      // ✅ AJUSTE: se não tiver bolão salvo, desabilita e muda texto (sem quebrar layout)
+      const bolao = getBolaoCompradoPreferencial();
+      if (!bolao || !Array.isArray(bolao.dezenas) || bolao.dezenas.length === 0) {
+        btn.disabled = true;
+        btn.textContent = 'BOLÃO NÃO ENCONTRADO';
+        return;
+      }
+
       btn.addEventListener('click', function () {
         abrirModalBolao();
       });
     }
 
-    // Inicialização
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function () {
         carregarDados();
